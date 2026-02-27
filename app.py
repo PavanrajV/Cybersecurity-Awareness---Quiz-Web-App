@@ -5,6 +5,7 @@ from datetime import datetime
 from functools import wraps
 
 app = Flask(__name__)
+app.jinja_env.globals.update(enumerate=enumerate)
 app.secret_key = 'cybersec_quiz_secret_key_2024_xK9mP2qR'
 DB_PATH = os.path.join(os.path.dirname(__file__), 'database', 'cybersec.db')
 
