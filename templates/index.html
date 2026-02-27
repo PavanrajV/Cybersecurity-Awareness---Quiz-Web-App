@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badges">
+      <span class="badge">🛡️ Cybersecurity</span>
+      <span class="badge">⏱️ Timed MCQ Quiz</span>
+      <span class="badge">🎓 Certification</span>
+      <span class="badge">📊 Progress Tracking</span>
+    </div>
+    <h1>Master <span>Cybersecurity</span><br>Awareness Today</h1>
+    <p>Test your knowledge with timed MCQ quizzes covering phishing, malware, network security, passwords, and more. Earn grades and certificates.</p>
+    <div class="hero-btns">
+      <a href="{{ url_for('register') }}" class="btn btn-primary">🚀 Get Started Free</a>
+      <a href="{{ url_for('login') }}" class="btn btn-outline">Login</a>
+    </div>
+  </div>
+</section>
+
+<section class="features" style="background:var(--secondary);">
+  <div style="max-width:1100px;margin:0 auto;">
+    <h2 class="section-title">Why <span>CyberQuiz?</span></h2>
+    <p class="section-sub">Comprehensive cybersecurity training in a gamified format</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">⏱️</div>
+        <div class="feature-title">Timed Questions</div>
+        <div class="feature-desc">30-second countdown per question simulates real-world pressure</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎯</div>
+        <div class="feature-title">MCQ Format</div>
+        <div class="feature-desc">Multiple choice questions with instant feedback on answers</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">Grade System</div>
+        <div class="feature-desc">A, B, C, D grading based on your percentage score</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎓</div>
+        <div class="feature-title">Certificates</div>
+        <div class="feature-desc">Earn a certificate for passing with grade A, B, or C</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📈</div>
+        <div class="feature-title">Progress Tracking</div>
+        <div class="feature-desc">View your improvement over time with detailed analytics</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔧</div>
+        <div class="feature-title">Admin Panel</div>
+        <div class="feature-desc">Full control over questions, users, and result reports</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="features">
+  <div style="max-width:1100px;margin:0 auto;">
+    <h2 class="section-title">Topics <span>Covered</span></h2>
+    <div class="topic-grid">
+      <div class="topic-card"><div class="topic-icon">🎣</div><div class="topic-name">Phishing</div></div>
+      <div class="topic-card"><div class="topic-icon">🦠</div><div class="topic-name">Malware</div></div>
+      <div class="topic-card"><div class="topic-icon">🔑</div><div class="topic-name">Passwords</div></div>
+      <div class="topic-card"><div class="topic-icon">🌐</div><div class="topic-name">Network Security</div></div>
+      <div class="topic-card"><div class="topic-icon">🎭</div><div class="topic-name">Social Engineering</div></div>
+      <div class="topic-card"><div class="topic-icon">🔒</div><div class="topic-name">Data Protection</div></div>
+      <div class="topic-card"><div class="topic-icon">🌍</div><div class="topic-name">Safe Browsing</div></div>
+      <div class="topic-card"><div class="topic-icon">🔐</div><div class="topic-name">Cryptography</div></div>
+      <div class="topic-card"><div class="topic-icon">🚨</div><div class="topic-name">Incident Response</div></div>
+    </div>
+  </div>
+</section>
+{% endblock %}

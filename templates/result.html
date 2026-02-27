@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Result{% endblock %}
+{% block content %}
+<div class="container" style="max-width:800px">
+  <div class="result-hero fade-in">
+    <div class="grade-circle grade-{{ res.grade }}">{{ res.grade }}</div>
+    <div class="score-big">{{ res.score }} / {{ res.total_questions }}</div>
+    <div class="score-label" style="font-size:1.3rem;margin-top:0.3rem">{{ res.percentage }}%</div>
+    <div style="color:var(--text-light);margin-top:0.5rem">
+      {% if res.grade == 'A' %}🏆 Outstanding! You're a Cybersecurity Expert!
+      {% elif res.grade == 'B' %}🌟 Great work! Strong cybersecurity knowledge!
+      {% elif res.grade == 'C' %}👍 Good effort! Keep learning and improving!
+      {% else %}📚 Keep studying — you'll get there!
+      {% endif %}
+    </div>
+    <div style="display:flex;gap:1rem;justify-content:center;margin-top:1.5rem;flex-wrap:wrap">
+      {% if res.grade != 'D' %}
+      <a href="{{ url_for('certificate', result_id=res.result_id) }}" class="btn btn-primary">🎓 Get Certificate</a>
+      {% endif %}
+      <a href="{{ url_for('quiz') }}" class="btn btn-outline">🔄 Try Again</a>
+      <a href="{{ url_for('dashboard') }}" class="btn btn-outline">📊 Dashboard</a>
+    </div>
+  </div>
+
+  <h3 style="color:var(--white);margin-bottom:1rem">📋 Answer Review</h3>
+  {% for d in details %}
+  <div class="review-item {{ 'correct' if d.is_correct else 'wrong' }}">
+    <div class="review-q">
+      {{ loop.index }}. {{ d.question_text }}
+      <span style="float:right">{{ '✅' if d.is_correct else '❌' }}</span>
+    </div>
+    {% set opts = [d.option1, d.option2, d.option3, d.option4] %}
+    {% for i, opt in enumerate(opts) if opt %}
+    <div class="review-opt">
+      {% if i+1 == d.correct_option %}
+        <span class="icon" style="color:var(--success)">✅</span>
+        <span style="color:var(--success)"><strong>{{ opt }}</strong> (Correct)</span>
+      {% elif i+1 == d.selected_option and not d.is_correct %}
+        <span class="icon" style="color:var(--danger)">❌</span>
+        <span style="color:var(--danger)">{{ opt }} (Your answer)</span>
+      {% else %}
+        <span class="icon">○</span>
+        <span style="color:var(--text-light)">{{ opt }}</span>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div class="container" style="padding:0">
+    <h1>👋 Welcome, {{ session.name }}</h1>
+    <p>Your cybersecurity learning dashboard</p>
+  </div>
+</div>
+<div class="container">
+  <div class="grid grid-4" style="margin-bottom:2rem">
+    <div class="stat-card">
+      <div class="stat-icon">📝</div>
+      <div class="stat-value">{{ stats.total or 0 }}</div>
+      <div class="stat-label">Quizzes Taken</div>
+    </div>
+    <div class="stat-card" style="--accent:#52b788">
+      <div class="stat-icon">📈</div>
+      <div class="stat-value">{{ stats.avg_pct or 0 }}%</div>
+      <div class="stat-label">Average Score</div>
+    </div>
+    <div class="stat-card" style="--accent:#f4a261">
+      <div class="stat-icon">🏆</div>
+      <div class="stat-value">{{ stats.best_pct or 0 }}%</div>
+      <div class="stat-label">Best Score</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🎓</div>
+      <div class="stat-value">{{ stats.ga or 0 }}</div>
+      <div class="stat-label">Grade A's Earned</div>
+    </div>
+  </div>
+
+  <div class="grid grid-2">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">🚀 Start a New Quiz</span>
+      </div>
+      <p style="color:var(--text-light);margin-bottom:1.5rem">Test your cybersecurity knowledge with timed MCQ questions.</p>
+      <a href="{{ url_for('quiz') }}" class="btn btn-primary btn-block">Start Quiz Now</a>
+      <a href="{{ url_for('progress') }}" class="btn btn-outline btn-block" style="margin-top:0.7rem">View Progress</a>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">🏅 Grade Distribution</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;text-align:center">
+        {% for grade, count, cls in [('A', stats.ga, 'grade-A'), ('B', stats.gb, 'grade-B'), ('C', stats.gc, 'grade-C'), ('D', stats.gd, 'grade-D')] %}
+        <div>
+          <div class="grade-circle {{ cls }}" style="width:60px;height:60px;font-size:1.5rem;margin-bottom:0.5rem">{{ grade }}</div>
+          <div style="font-size:1.3rem;font-weight:700;color:var(--white)">{{ count or 0 }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  {% if results %}
+  <div class="card" style="margin-top:1.5rem">
+    <div class="card-header">
+      <span class="card-title">📋 Recent Quiz History</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Score</th><th>Percentage</th><th>Grade</th><th>Date</th><th>Action</th></tr></thead>
+        <tbody>
+          {% for r in results %}
+          <tr>
+            <td style="color:var(--text-light)">{{ loop.index }}</td>
+            <td>{{ r.score }}/{{ r.total_questions }}</td>
+            <td>{{ r.percentage }}%</td>
+            <td><span class="grade-pill gp-{{ r.grade }}">{{ r.grade }}</span></td>
+            <td style="color:var(--text-light)">{{ r.date_time[:16] }}</td>
+            <td>
+              <a href="{{ url_for('result', result_id=r.result_id) }}" class="btn btn-outline btn-sm">View</a>
+              {% if r.grade != 'D' %}
+              <a href="{{ url_for('certificate', result_id=r.result_id) }}" class="btn btn-primary btn-sm">Certificate</a>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

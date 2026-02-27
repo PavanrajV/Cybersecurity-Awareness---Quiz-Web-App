@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}{{ action }} Question{% endblock %}
+{% block content %}
+<div class="admin-layout">
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <a href="{{ url_for('admin_dashboard') }}"><span class="icon">📊</span> Dashboard</a>
+      <a href="{{ url_for('admin_questions') }}" class="active"><span class="icon">❓</span> Questions</a>
+      <a href="{{ url_for('admin_add_question') }}"><span class="icon">➕</span> Add Question</a>
+      <a href="{{ url_for('admin_results') }}"><span class="icon">📋</span> Results</a>
+      <a href="{{ url_for('admin_users') }}"><span class="icon">👥</span> Users</a>
+      <a href="{{ url_for('logout') }}"><span class="icon">🚪</span> Logout</a>
+    </div>
+  </div>
+  <div class="admin-content">
+    <h1 style="color:var(--white);margin-bottom:1.5rem">{{ action }} Question</h1>
+    <div class="card" style="max-width:700px">
+      <form method="POST">
+        <div class="form-group">
+          <label class="form-label">Question Text</label>
+          <textarea name="question_text" class="form-control" rows="3" required style="resize:vertical">{{ question.question_text if question else '' }}</textarea>
+        </div>
+        {% for i in range(1,5) %}
+        <div class="form-group">
+          <label class="form-label">Option {{ i }}</label>
+          <input type="text" name="option{{ i }}" class="form-control" required value="{{ question['option'~i] if question else '' }}">
+        </div>
+        {% endfor %}
+        <div class="form-group">
+          <label class="form-label">Correct Option (1-4)</label>
+          <select name="correct_option" class="form-control" required>
+            {% for i in range(1,5) %}
+            <option value="{{ i }}" {{ 'selected' if question and question.correct_option==i }}>Option {{ i }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+          <div class="form-group">
+            <label class="form-label">Topic</label>
+            <select name="topic" class="form-control" required>
+              {% for t in ['phishing','malware','passwords','network','social_engineering','data_protection','browsing','cryptography','incident_response','general'] %}
+              <option value="{{ t }}" {{ 'selected' if question and question.topic==t }} style="text-transform:capitalize">{{ t.replace('_',' ').title() }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Difficulty</label>
+            <select name="difficulty" class="form-control" required>
+              {% for d in ['easy','medium','hard'] %}
+              <option value="{{ d }}" {{ 'selected' if question and question.difficulty==d }}>{{ d.title() }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div style="display:flex;gap:1rem;margin-top:0.5rem">
+          <button type="submit" class="btn btn-primary">💾 {{ action }} Question</button>
+          <a href="{{ url_for('admin_questions') }}" class="btn btn-outline">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+{% block content %}
+<div class="auth-page">
+  <div class="auth-box fade-in">
+    <div class="auth-logo">
+      <div style="font-size:3rem">🛡️</div>
+      <h2>Create Account</h2>
+      <p>Join CyberQuiz today</p>
+    </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for cat, msg in messages %}<div class="alert alert-{{ cat }}">{{ msg }}</div>{% endfor %}
+    {% endwith %}
+    <form method="POST">
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        <input type="text" name="name" class="form-control" placeholder="John Doe" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input type="email" name="email" class="form-control" placeholder="you@email.com" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password (min 8 characters)</label>
+        <input type="password" name="password" class="form-control" placeholder="••••••••" required minlength="8">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Confirm Password</label>
+        <input type="password" name="confirm_password" class="form-control" placeholder="••••••••" required>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block" style="margin-top:1rem">Create Account →</button>
+    </form>
+    <p style="text-align:center;margin-top:1.5rem;color:var(--text-light);font-size:0.9rem">
+      Already have an account? <a href="{{ url_for('login') }}" style="color:var(--accent)">Login</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

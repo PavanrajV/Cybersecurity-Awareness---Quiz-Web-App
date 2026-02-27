@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Users{% endblock %}
+{% block content %}
+<div class="admin-layout">
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <a href="{{ url_for('admin_dashboard') }}"><span class="icon">📊</span> Dashboard</a>
+      <a href="{{ url_for('admin_questions') }}"><span class="icon">❓</span> Questions</a>
+      <a href="{{ url_for('admin_results') }}"><span class="icon">📋</span> Results</a>
+      <a href="{{ url_for('admin_users') }}" class="active"><span class="icon">👥</span> Users</a>
+      <a href="{{ url_for('logout') }}"><span class="icon">🚪</span> Logout</a>
+    </div>
+  </div>
+  <div class="admin-content">
+    <h1 style="color:var(--white);margin-bottom:1.5rem">Registered Users</h1>
+    <div class="card">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Quizzes</th><th>Avg Score</th><th>Joined</th></tr></thead>
+          <tbody>
+            {% for u in users %}
+            <tr>
+              <td style="color:var(--white)">{{ u.name }}</td>
+              <td style="color:var(--text-light)">{{ u.email }}</td>
+              <td><span class="badge" style="background:{{ 'rgba(230,57,70,0.15)' if u.role=='admin' else 'rgba(100,255,218,0.1)' }};color:{{ 'var(--danger)' if u.role=='admin' else 'var(--accent)' }}">{{ u.role }}</span></td>
+              <td>{{ u.quiz_count }}</td>
+              <td>{{ u.avg_score or '-' }}{{ '%' if u.avg_score }}</td>
+              <td style="color:var(--text-light)">{{ u.created_at[:10] }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

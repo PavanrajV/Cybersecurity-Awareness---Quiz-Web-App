@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Progress{% endblock %}
+{% block content %}
+<div class="page-header"><div class="container" style="padding:0">
+  <h1>📈 Your Progress</h1>
+  <p>Track your cybersecurity learning journey</p>
+</div></div>
+<div class="container">
+  {% if topic_stats %}
+  <div class="card" style="margin-bottom:1.5rem">
+    <div class="card-header"><span class="card-title">🎯 Performance by Topic</span></div>
+    {% for ts in topic_stats %}
+    {% set pct = ((ts.correct / ts.total) * 100)|round(1) if ts.total > 0 else 0 %}
+    <div style="margin-bottom:1rem">
+      <div style="display:flex;justify-content:space-between;margin-bottom:0.3rem">
+        <span style="text-transform:capitalize;color:var(--white)">{{ ts.topic.replace('_',' ') }}</span>
+        <span style="color:var(--accent)">{{ pct }}% ({{ ts.correct }}/{{ ts.total }})</span>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-fill" style="width:{{ pct }}%"></div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if results %}
+  <div class="card">
+    <div class="card-header"><span class="card-title">📋 All Quiz Attempts</span></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Score</th><th>%</th><th>Grade</th><th>Time</th><th>Date</th><th></th></tr></thead>
+        <tbody>
+          {% for r in results|reverse %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ r.score }}/{{ r.total_questions }}</td>
+            <td>{{ r.percentage }}%</td>
+            <td><span class="grade-pill gp-{{ r.grade }}">{{ r.grade }}</span></td>
+            <td>{{ (r.time_taken // 60) }}m {{ (r.time_taken % 60) }}s</td>
+            <td style="color:var(--text-light)">{{ r.date_time[:16] }}</td>
+            <td><a href="{{ url_for('result', result_id=r.result_id) }}" class="btn btn-outline btn-sm">View</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% else %}
+  <div class="card" style="text-align:center;padding:3rem">
+    <div style="font-size:3rem">📚</div>
+    <p style="color:var(--text-light);margin:1rem 0">No quiz attempts yet. Start your first quiz!</p>
+    <a href="{{ url_for('quiz') }}" class="btn btn-primary">Take a Quiz</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

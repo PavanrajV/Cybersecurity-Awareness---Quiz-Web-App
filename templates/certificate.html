@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Certificate{% endblock %}
+{% block content %}
+<div style="padding:2rem">
+  <div class="certificate-wrapper fade-in">
+    <div class="cert-border"></div>
+    <div class="cert-logo">🔐</div>
+    <div class="cert-title">Certificate of Achievement</div>
+    <div class="cert-heading">CyberSec Awareness Quiz</div>
+    <div class="cert-subtitle">This is to certify that</div>
+    <div class="cert-name">{{ res.name }}</div>
+    <div class="cert-subtitle">has successfully completed the</div>
+    <div style="font-size:1.3rem;color:var(--white);margin:0.5rem 0">Cybersecurity Awareness Assessment</div>
+    <div style="color:var(--text-light);margin-bottom:1rem">with a final score of <strong style="color:var(--accent)">{{ res.percentage }}%</strong></div>
+    <div class="cert-seal">{{ res.grade }}</div>
+    <div>Grade: <span class="cert-grade">{{ res.grade }}</span></div>
+    <div class="cert-date">
+      Date: {{ res.date_time[:10] }} &nbsp;|&nbsp; ID: CERT-{{ '%05d' % res.result_id }}
+    </div>
+    <div style="display:flex;justify-content:center;gap:1rem;margin-top:2rem;flex-wrap:wrap" class="no-print">
+      <button onclick="window.print()" class="btn btn-primary">🖨️ Print Certificate</button>
+      <a href="{{ url_for('dashboard') }}" class="btn btn-outline">← Dashboard</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

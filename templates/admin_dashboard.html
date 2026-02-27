@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<div class="admin-layout">
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">Overview</div>
+      <a href="{{ url_for('admin_dashboard') }}" class="active"><span class="icon">📊</span> Dashboard</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Management</div>
+      <a href="{{ url_for('admin_questions') }}"><span class="icon">❓</span> Questions</a>
+      <a href="{{ url_for('admin_add_question') }}"><span class="icon">➕</span> Add Question</a>
+      <a href="{{ url_for('admin_results') }}"><span class="icon">📋</span> All Results</a>
+      <a href="{{ url_for('admin_users') }}"><span class="icon">👥</span> Users</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Account</div>
+      <a href="{{ url_for('logout') }}"><span class="icon">🚪</span> Logout</a>
+    </div>
+  </div>
+  <div class="admin-content">
+    <h1 style="color:var(--white);margin-bottom:0.3rem">Admin Dashboard</h1>
+    <p style="color:var(--text-light);margin-bottom:2rem">System overview and analytics</p>
+    <div class="grid grid-4" style="margin-bottom:2rem">
+      <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-value">{{ stats.total_users }}</div><div class="stat-label">Total Users</div></div>
+      <div class="stat-card"><div class="stat-icon">❓</div><div class="stat-value">{{ stats.total_questions }}</div><div class="stat-label">Questions</div></div>
+      <div class="stat-card"><div class="stat-icon">📝</div><div class="stat-value">{{ stats.total_results }}</div><div class="stat-label">Quiz Attempts</div></div>
+      <div class="stat-card"><div class="stat-icon">📈</div><div class="stat-value">{{ stats.avg_score }}%</div><div class="stat-label">Avg Score</div></div>
+    </div>
+    <div class="grid grid-2">
+      <div class="card">
+        <div class="card-header"><span class="card-title">📊 Grade Distribution</span></div>
+        {% for gd in grade_dist %}
+        <div style="display:flex;align-items:center;gap:1rem;margin-bottom:0.8rem">
+          <span class="grade-pill gp-{{ gd.grade }}" style="width:40px;text-align:center">{{ gd.grade }}</span>
+          <div class="progress-bar-wrap" style="flex:1">
+            <div class="progress-fill" style="width:{{ [(gd.count / stats.total_results * 100), 100]|min }}%"></div>
+          </div>
+          <span style="color:var(--text-light);font-size:0.9rem;min-width:30px">{{ gd.count }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">📋 Recent Activity</span></div>
+        <div class="table-wrap" style="max-height:300px;overflow-y:auto">
+          <table>
+            <thead><tr><th>User</th><th>Score</th><th>Grade</th><th>Date</th></tr></thead>
+            <tbody>
+              {% for r in recent %}
+              <tr>
+                <td>{{ r.name }}</td>
+                <td>{{ r.percentage }}%</td>
+                <td><span class="grade-pill gp-{{ r.grade }}">{{ r.grade }}</span></td>
+                <td style="color:var(--text-light)">{{ r.date_time[:10] }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

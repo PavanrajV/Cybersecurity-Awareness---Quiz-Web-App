@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Manage Questions{% endblock %}
+{% block content %}
+<div class="admin-layout">
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">Management</div>
+      <a href="{{ url_for('admin_dashboard') }}"><span class="icon">📊</span> Dashboard</a>
+      <a href="{{ url_for('admin_questions') }}" class="active"><span class="icon">❓</span> Questions</a>
+      <a href="{{ url_for('admin_add_question') }}"><span class="icon">➕</span> Add Question</a>
+      <a href="{{ url_for('admin_results') }}"><span class="icon">📋</span> All Results</a>
+      <a href="{{ url_for('admin_users') }}"><span class="icon">👥</span> Users</a>
+      <a href="{{ url_for('logout') }}"><span class="icon">🚪</span> Logout</a>
+    </div>
+  </div>
+  <div class="admin-content">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
+      <h1 style="color:var(--white)">Question Bank ({{ questions|length }})</h1>
+      <a href="{{ url_for('admin_add_question') }}" class="btn btn-primary">➕ Add Question</a>
+    </div>
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.5rem">
+      <a href="{{ url_for('admin_questions') }}" class="btn {{ 'btn-primary' if current_topic=='all' else 'btn-outline' }} btn-sm">All</a>
+      {% for t in topics %}
+      <a href="{{ url_for('admin_questions', topic=t.topic) }}" class="btn {{ 'btn-primary' if current_topic==t.topic else 'btn-outline' }} btn-sm" style="text-transform:capitalize">{{ t.topic.replace('_',' ') }}</a>
+      {% endfor %}
+    </div>
+    <div class="card">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Question</th><th>Topic</th><th>Difficulty</th><th>Actions</th></tr></thead>
+          <tbody>
+            {% for q in questions %}
+            <tr>
+              <td style="color:var(--text-light)">{{ q.question_id }}</td>
+              <td>{{ q.question_text[:70] }}{% if q.question_text|length > 70 %}...{% endif %}</td>
+              <td style="text-transform:capitalize">{{ q.topic.replace('_',' ') }}</td>
+              <td><span class="q-badge diff-{{ q.difficulty }}">{{ q.difficulty }}</span></td>
+              <td>
+                <a href="{{ url_for('admin_edit_question', qid=q.question_id) }}" class="btn btn-outline btn-sm">Edit</a>
+                <form method="POST" action="{{ url_for('admin_delete_question', qid=q.question_id) }}" style="display:inline"
+                      onsubmit="return confirm('Delete this question?')">
+                  <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

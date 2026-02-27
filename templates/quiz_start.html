@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Quiz{% endblock %}
+{% block content %}
+<div class="quiz-wrapper">
+  <div id="quiz-setup" class="card">
+    <div class="card-header">
+      <span class="card-title">🎯 Configure Your Quiz</span>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Select Topic</label>
+      <select id="topic-select" class="form-control">
+        <option value="all">🌐 All Topics</option>
+        <option value="phishing">🎣 Phishing</option>
+        <option value="malware">🦠 Malware</option>
+        <option value="passwords">🔑 Passwords</option>
+        <option value="network">🌐 Network Security</option>
+        <option value="social_engineering">🎭 Social Engineering</option>
+        <option value="data_protection">🔒 Data Protection</option>
+        <option value="browsing">🌍 Safe Browsing</option>
+        <option value="cryptography">🔐 Cryptography</option>
+        <option value="incident_response">🚨 Incident Response</option>
+        <option value="general">⚙️ General Security</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Number of Questions</label>
+      <select id="count-select" class="form-control">
+        <option value="10">10 Questions (~5 min)</option>
+        <option value="15" selected>15 Questions (~8 min)</option>
+        <option value="20">20 Questions (~10 min)</option>
+        <option value="25">25 Questions (~13 min)</option>
+      </select>
+    </div>
+    <div style="background:var(--secondary);border-radius:8px;padding:1rem;margin-bottom:1.5rem">
+      <p style="color:var(--text-light);font-size:0.9rem">
+        ⏱️ <strong style="color:var(--accent)">30 seconds</strong> per question &nbsp;|&nbsp;
+        🎯 MCQ Format &nbsp;|&nbsp;
+        📊 Graded: A(90%+) B(75%+) C(50%+) D(&lt;50%)
+      </p>
+    </div>
+    <button id="start-btn" class="btn btn-primary btn-block" style="font-size:1.1rem;padding:0.9rem">
+      🚀 Start Quiz
+    </button>
+  </div>
+
+  <div id="quiz-area" style="display:none">
+    <div class="quiz-header">
+      <div>
+        <div style="font-size:0.8rem;color:var(--text-light)">Question</div>
+        <div id="q-num" style="font-size:1.1rem;font-weight:700;color:var(--white)"></div>
+      </div>
+      <div class="timer-ring">
+        <svg width="70" height="70" viewBox="0 0 70 70">
+          <circle class="bg-circle" cx="35" cy="35" r="30" stroke-dasharray="189" stroke-dashoffset="0"/>
+          <circle id="timer-circle" class="progress-circle" cx="35" cy="35" r="30" stroke-dasharray="189" stroke-dashoffset="0"/>
+        </svg>
+        <div id="timer-text" class="timer-text">30</div>
+      </div>
+    </div>
+    <div class="quiz-progress-bar">
+      <div id="progress-fill" class="quiz-progress-fill" style="width:0%"></div>
+    </div>
+    <div class="question-card">
+      <div class="question-meta">
+        <span id="q-topic" class="q-badge topic"></span>
+        <span id="q-diff" class="q-badge medium"></span>
+      </div>
+      <div id="q-text" class="question-text"></div>
+      <ul id="options-list" class="options-list"></ul>
+    </div>
+  </div>
+</div>
+<script src="{{ url_for('static', filename='js/quiz.js') }}"></script>
+{% endblock %}

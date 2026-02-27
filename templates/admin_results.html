@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}All Results{% endblock %}
+{% block content %}
+<div class="admin-layout">
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <a href="{{ url_for('admin_dashboard') }}"><span class="icon">📊</span> Dashboard</a>
+      <a href="{{ url_for('admin_questions') }}"><span class="icon">❓</span> Questions</a>
+      <a href="{{ url_for('admin_results') }}" class="active"><span class="icon">📋</span> Results</a>
+      <a href="{{ url_for('admin_users') }}"><span class="icon">👥</span> Users</a>
+      <a href="{{ url_for('logout') }}"><span class="icon">🚪</span> Logout</a>
+    </div>
+  </div>
+  <div class="admin-content">
+    <h1 style="color:var(--white);margin-bottom:1.5rem">All Quiz Results ({{ results|length }})</h1>
+    <form method="GET" style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem">
+      <input type="text" name="search" class="form-control search-input" placeholder="Search by name or email..." value="{{ search }}">
+      <select name="grade" class="form-control" style="max-width:140px">
+        <option value="all">All Grades</option>
+        {% for g in ['A','B','C','D'] %}
+        <option value="{{ g }}" {{ 'selected' if grade_filter==g }}>Grade {{ g }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit" class="btn btn-primary">🔍 Filter</button>
+    </form>
+    <div class="card">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>User</th><th>Email</th><th>Score</th><th>%</th><th>Grade</th><th>Time</th><th>Date</th></tr></thead>
+          <tbody>
+            {% for r in results %}
+            <tr>
+              <td style="color:var(--white)">{{ r.name }}</td>
+              <td style="color:var(--text-light)">{{ r.email }}</td>
+              <td>{{ r.score }}/{{ r.total_questions }}</td>
+              <td>{{ r.percentage }}%</td>
+              <td><span class="grade-pill gp-{{ r.grade }}">{{ r.grade }}</span></td>
+              <td>{{ (r.time_taken // 60) }}m {{ (r.time_taken % 60) }}s</td>
+              <td style="color:var(--text-light)">{{ r.date_time[:16] }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}CyberQuiz{% endblock %} | CyberSec Awareness</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔐</text></svg>">
+</head>
+<body>
+{% if not hide_nav %}
+<nav class="navbar">
+  <a class="navbar-brand" href="{{ url_for('index') }}">🔐 <span>CyberQuiz</span></a>
+  <ul class="nav-links">
+    {% if session.user_id %}
+      {% if session.role == 'admin' %}
+        <li><a href="{{ url_for('admin_dashboard') }}">Admin Panel</a></li>
+        <li><a href="{{ url_for('admin_questions') }}">Questions</a></li>
+        <li><a href="{{ url_for('admin_results') }}">Results</a></li>
+      {% else %}
+        <li class="hide-mobile"><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+        <li class="hide-mobile"><a href="{{ url_for('quiz') }}">Start Quiz</a></li>
+        <li class="hide-mobile"><a href="{{ url_for('progress') }}">Progress</a></li>
+      {% endif %}
+      <li><a href="{{ url_for('logout') }}" class="btn-nav">Logout</a></li>
+    {% else %}
+      <li><a href="{{ url_for('login') }}">Login</a></li>
+      <li><a href="{{ url_for('register') }}" class="btn-nav">Register</a></li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div style="max-width:800px;margin:1rem auto;padding:0 1rem;">
+      {% for cat, msg in messages %}
+        <div class="alert alert-{{ cat }}">{{ msg }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+{% block content %}{% endblock %}
+
+<footer>
+  <p>🔐 CyberSec Awareness Quiz &copy; 2024 — Enhancing Digital Security Awareness</p>
+</footer>
+</body>
+</html>
